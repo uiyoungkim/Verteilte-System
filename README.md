@@ -1,4 +1,5 @@
 Verteilte System<br>
 
 Sequenzdiagramm
-<img width="1133" alt="image" src="https://github.com/uiyoungkim/Verteilte-System/assets/115372518/9abaa32d-b5c5-4e2f-ac1f-f69b0f4ade31">
+
+![WhatsApp Bild 2024-03-29 um 21 57 52_0c46d100](https://github.com/uiyoungkim/Verteilte-System/assets/115372518/924457c6-8fc9-4e28-9f62-93e9a1f56f61)
