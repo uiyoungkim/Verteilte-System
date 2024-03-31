@@ -6,6 +6,8 @@ public class BuchungsAnfrage {
     private String von;
     private String nach;
 
+    private String name;
+
 
     public String getId() {
         return id;
@@ -37,5 +39,12 @@ public class BuchungsAnfrage {
 
     public void setNach(String nach) {
         this.nach = nach;
+    }
+
+    public String getHotelName() {
+        return name;
+    }
+    public String getFlightName() {
+        return name;
     }
 }

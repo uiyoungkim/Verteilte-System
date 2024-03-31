@@ -7,7 +7,12 @@ import java.net.InetAddress;
 public class UdpClient {
 
     public static void main(String[] args) {
-        String anfrageDaten = "Hotelbuchungsanfrage";
+        String anfrageDaten = String.format(
+                "{\"typ\":\"Hotelbuchung\", \"hotelName\":\"DHBWqwdqd\", \"checkInDatum\":\"%s\", \"checkOutDatum\":\"%s\"}",
+                "2023-05-01",
+                "2023-05-05"
+        ); // --> JSON ähnliche String
+
         String serverAdresse = "localhost";
         int serverPort = 4445;
 
