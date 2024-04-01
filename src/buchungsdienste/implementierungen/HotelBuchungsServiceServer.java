@@ -15,12 +15,7 @@ public class HotelBuchungsServiceServer {
                 System.out.println("Anfrage erhalten.");
 
                 // Starte einen neuen Thread für jede Anfrage
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        handleRequest(packet, socket);
-                    }
-                }).start();
+                new Thread(() -> handleRequest(packet, socket)).start();
             }
         } catch (Exception e) {
             System.err.println("Ein Fehler ist aufgetreten: " + e.getMessage());

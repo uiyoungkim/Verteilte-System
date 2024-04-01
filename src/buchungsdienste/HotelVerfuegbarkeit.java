@@ -11,6 +11,7 @@ public class HotelVerfuegbarkeit {
         verfuegbareZimmer.put("DHBW", 10);
         verfuegbareZimmer.put("UrlaubInDenBergen", 5);
         verfuegbareZimmer.put("FluchtAnDieSee", 1);
+        verfuegbareZimmer.put("HotelIbiza", 2);
     }
 
     // Methode zur Prüfung der Verfügbarkeit

@@ -5,10 +5,10 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 public class UdpClient {
-
+// Client für Hotel
     public static void main(String[] args) {
         String anfrageDaten = String.format(
-                "{\"typ\":\"Hotelbuchung\", \"hotelName\":\"DHBW\", \"checkInDatum\":\"%s\", \"checkOutDatum\":\"%s\"}",
+                "{\"typ\":\"Hotelbuchung\", \"hotelName\":\"FluchtAnDieSee\", \"checkInDatum\":\"%s\", \"checkOutDatum\":\"%s\"}",
                 "2023-05-01",
                 "2023-05-05"
         ); // --> JSON ähnliche String
