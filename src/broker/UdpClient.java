@@ -9,12 +9,12 @@ public class UdpClient {
         int hotelzimmer = 0;
         int hoteldauer = 0;
         String hotelankunft = "";
-        String flug = "";
+        String airline = "";
         int flugplaetze = 0;
         int reisedauer = 0;
         String abflug = "";
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Geben Sie bitte Ihre Daten an. Benutzen Sie dafür bitte folgenden Argumente: -hotel String -hotelzimmer int -hoteldauer int -hotelankunft Date -flug String -flugplaetze int -reisedauer int -abflug Date : ");
+        System.out.println("Geben Sie bitte Ihre Daten an. Benutzen Sie dafür bitte folgenden Argumente: -hotel String -hotelzimmer int -hoteldauer int -hotelankunft Date -airline String -flugplaetze int -reisedauer int -abflug Date : ");
         try {
             String eingabe = reader.readLine();
             boolean valid = false;
@@ -35,8 +35,8 @@ public class UdpClient {
                         case "hotelankunft":
                             hotelankunft = parameter[1];
                             break;
-                        case "flug":
-                            flug = parameter[1];
+                        case "airline":
+                            airline = parameter[1];
                             break;
                         case "flugplaetze":
                             flugplaetze = Integer.parseInt(parameter[1].trim());
@@ -52,7 +52,7 @@ public class UdpClient {
                             break;
                     }
                 }
-                if (!hotel.isEmpty() && hotelzimmer != 0 && hoteldauer != 0 && !hotelankunft.isEmpty() && !flug.isEmpty() && flugplaetze != 0 && reisedauer != 0 && !abflug.isEmpty()) {
+                if (!hotel.isEmpty() && hotelzimmer != 0 && hoteldauer != 0 && !hotelankunft.isEmpty() && !airline.isEmpty() && flugplaetze != 0 && reisedauer != 0 && !abflug.isEmpty()) {
                     valid = true;
                 } else {
                     System.out.println("Bitte geben Sie alle Daten korrekt an.");
@@ -64,8 +64,8 @@ public class UdpClient {
             e.printStackTrace();
         }
 
-        String anfrageDaten = String.format("{\"Hotel\": {\"hotel\":\"%s\", \"hotelzimmer\":%d, \"hoteldauer\":%d, \"hotelankunft\":\"%s\"}, \"Flug\": {\"flug\":\"%s\", \"flugplaetze\":%d, \"reisedauer\":%d, \"abflug\":\"%s\"}}", hotel, hotelzimmer, hoteldauer, hotelankunft, flug, flugplaetze, reisedauer, abflug);
-
+        String anfrageDaten = String.format("{\"Hotel\": {\"hotel\":\"%s\", \"hotelzimmer\":%d, \"hoteldauer\":%d, \"hotelankunft\":\"%s\"}, \"Flug\": {\"airline\":\"%s\", \"flugplaetze\":%d, \"reisedauer\":%d, \"abflug\":\"%s\"}}", hotel, hotelzimmer, hoteldauer, hotelankunft, airline, flugplaetze, reisedauer, abflug);
+ // --> BSP: -hotel DHBW -hotelzimmer 2 -hoteldauer 5 -hotelankunft 01.07.2024 -airline Ryanair -flugplaetze 2 -reisedauer 8 -abflug 01.07.2024
         String serverAdresse = "localhost";
         int serverPort = 7777; // Port des MessageBrokers
         UdpClient client = new UdpClient();

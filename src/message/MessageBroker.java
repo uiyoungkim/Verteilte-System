@@ -12,7 +12,7 @@ public class MessageBroker {
 
     public static void main(String[] args) {
         try (DatagramSocket socket = new DatagramSocket(PORT)) {
-            System.out.println("MessageBrokerServer gestartet und lauscht auf Port " + PORT);
+            System.out.println("MessageBrokerServer gestartet und laufen auf Port " + PORT);
 
             while (true) {
                 byte[] buffer = new byte[1024];
@@ -22,23 +22,24 @@ public class MessageBroker {
                 String request = new String(packet.getData(), 0, packet.getLength()).trim();
                 System.out.println("Anfrage erhalten: " + request);
 
-                // Anfang von Hotel- und Fluganfrage finden.
-                int hotelStart = request.indexOf("\"Hotel\":");
-                int flugStart = request.indexOf("\"Flug\":");
+                // Extrahiere Hotel- und Fluganfrage
+                String hotelRequest = request.substring(request.indexOf("\"Hotel\": "), request.indexOf("}, \"Flug\":") + 1);
+                String flightRequest = request.substring(request.indexOf("\"Flug\":"));
 
-                // Substrings für Hotel- und Fluganfragen extrahieren
-                String hotelRequest = request.substring(hotelStart, flugStart - 2); // Bis zum Komma vor "Flug"
-                String flightRequest = request.substring(flugStart); // Vom "Flug" bis zum Ende
+                // Verwende Threads, um Anfragen parallel weiterzuleiten
+                Thread hotelThread = new Thread(() -> weiterleiten(hotelRequest, SERVER_ADDRESS, HOTEL_SERVER_PORT));
+                Thread flightThread = new Thread(() -> weiterleiten(flightRequest, SERVER_ADDRESS, FLIGHT_SERVER_PORT));
 
-                hotelRequest = "{" + hotelRequest + "}";
-                flightRequest = "{" + flightRequest + "}";
+                hotelThread.start();
+                flightThread.start();
 
-                System.out.println("Hotel Request: " + hotelRequest);
-                System.out.println("Flight Request: " + flightRequest);
-
-                // Weiterleiten der Anfragen an jeweiligen Server
-                weiterleiten(hotelRequest, SERVER_ADDRESS, HOTEL_SERVER_PORT, socket);
-                weiterleiten(flightRequest, SERVER_ADDRESS, FLIGHT_SERVER_PORT, socket);
+                // Warte auf beendigung beide Threads
+                try {
+                    hotelThread.join();
+                    flightThread.join();
+                } catch (InterruptedException e) {
+                    System.err.println("Thread wurde unterbrochen: " + e.getMessage());
+                }
             }
         } catch (Exception e) {
             System.err.println("Ein Fehler ist aufgetreten: " + e.getMessage());
@@ -46,11 +47,23 @@ public class MessageBroker {
         }
     }
 
-    private static void weiterleiten(String daten, String adresse, int port, DatagramSocket socket) throws Exception {
-        InetAddress inetAdresse = InetAddress.getByName(adresse);
-        byte[] buffer = daten.getBytes();
-        DatagramPacket weiterleitPacket = new DatagramPacket(buffer, buffer.length, inetAdresse, port);
-        socket.send(weiterleitPacket);
-        System.out.println("Anfrage weitergeleitet an " + adresse + ":" + port);
+    private static void weiterleiten(String daten, String adresse, int port) {
+        try (DatagramSocket weiterleitSocket = new DatagramSocket()) {
+            InetAddress inetAdresse = InetAddress.getByName(adresse);
+            byte[] buffer = daten.getBytes();
+            DatagramPacket weiterleitPacket = new DatagramPacket(buffer, buffer.length, inetAdresse, port);
+            weiterleitSocket.send(weiterleitPacket);
+            System.out.println("Anfrage weitergeleitet an " + adresse + ":" + port);
+
+            // Warte auf Antwort
+            buffer = new byte[1024];
+            DatagramPacket antwortPacket = new DatagramPacket(buffer, buffer.length);
+            weiterleitSocket.receive(antwortPacket);
+            String antwort = new String(antwortPacket.getData(), 0, antwortPacket.getLength());
+            System.out.println("Antwort erhalten von " + adresse + ":" + port + " - " + antwort);
+        } catch (Exception e) {
+            System.err.println("Fehler beim Weiterleiten der Anfrage: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
