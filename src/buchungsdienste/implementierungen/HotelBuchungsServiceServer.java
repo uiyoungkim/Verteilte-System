@@ -28,9 +28,9 @@ public class HotelBuchungsServiceServer {
             String received = new String(packet.getData(), 0, packet.getLength()).trim();
             System.out.println("Empfangene Daten: " + received);
 
-            // Annahme: Der empfangene String ist ein JSON im neuen Format.
+
             String hotelName = received.split("\"hotel\":\"")[1].split("\"")[0];
-            // Für eine echte Anwendung wäre es besser, eine JSON-Bibliothek zur Verarbeitung zu verwenden.
+
 
             String response;
 
