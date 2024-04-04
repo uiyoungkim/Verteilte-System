@@ -11,6 +11,7 @@ public class FlugVerfuegbarkeit {
         verfuegbareFluege.put("LH123", 100); // Flugnummer als Schlüssel
         verfuegbareFluege.put("FliegtBeiSonne", 1);
         verfuegbareFluege.put("StürzNieAb" , 20);
+        verfuegbareFluege.put("Ryanair" , 20);
     }
 
     // Methode zur Prüfung der Verfügbarkeit
