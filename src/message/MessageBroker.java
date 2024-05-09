@@ -3,13 +3,14 @@ package message;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.ArrayList;
 
 public class MessageBroker {
     private static final int PORT = 7777;
     private static final String SERVER_ADDRESS = "localhost";
     private static final int HOTEL_SERVER_PORT = 4445;
     private static final int FLIGHT_SERVER_PORT = 4446;
-
+    static ArrayList<String> uuidList = new ArrayList<>();
     public static void main(String[] args) {
         try (DatagramSocket socket = new DatagramSocket(PORT)) {
             System.out.println("MessageBrokerServer gestartet und laufen auf Port " + PORT);
@@ -20,7 +21,16 @@ public class MessageBroker {
                 socket.receive(packet);
 
                 String request = new String(packet.getData(), 0, packet.getLength()).trim();
+                if (uuidList.contains(request.split("\"uuid\":\"")[1].split("\"")[0])) {
+                    System.out.println("Anfrage bereits bearbeitet: " + request);
+                    continue;
+                }
+                uuidList.add(request.split("\"uuid\":\"")[1].split("\"")[0]);
                 System.out.println("Anfrage erhalten: " + request);
+
+                for (String uuid : uuidList) {
+                    System.out.println("UUID: " + uuid);
+                }
 
                 // Extrahiere Hotel- und Fluganfrage
                 String hotelRequest = request.substring(request.indexOf("\"Hotel\": "), request.indexOf("}, \"Flug\":") + 1);

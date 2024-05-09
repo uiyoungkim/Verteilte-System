@@ -41,6 +41,7 @@ public class HotelBuchungsServiceServer {
             } else {
                 response = String.format("{\"id\":\"\", \"erfolg\":false, \"nachricht\":\"Keine Verfügbarkeit im Hotel '%s'.\"}",
                         hotelName);
+
             }
 
             byte[] responseBytes = response.getBytes();
